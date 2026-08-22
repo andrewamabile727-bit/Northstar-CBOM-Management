@@ -6,13 +6,12 @@ import os
 st.set_page_config(page_title="BOM Pro", layout="wide")
 
 # --- 1. HARDCODED FILENAMES ---
-# Points directly to the primary CSV files in the bom-costing-tool repository
 MASTER_FILE = "Item_Master_v4_Template.csv"
 LINKS_FILE = "BOM_Links_v4_Template.csv"
 SKU_FILE = "L0&L1 Skus..xlsx - Sheet1.csv"
 
-# --- 2. DATA LOADING ENGINE WITH INSTANT CACHE REFRESH ---
-@st.cache_data(ttl=1)  # 1-second TTL ensures future GitHub price updates load instantly
+# --- 2. DATA LOADING ENGINE ---
+@st.cache_data(ttl=1)  # Instant refresh on file update
 def load_data():
     if not all(os.path.exists(f) for f in [MASTER_FILE, LINKS_FILE, SKU_FILE]):
         return None, None, None
@@ -38,11 +37,11 @@ st.title("🚀 BOM Professional")
 df_m, df_l, df_s = load_data()
 
 if df_m is None:
-    st.error(f"🚨 Missing core CSV files! Ensure `{MASTER_FILE}`, `{LINKS_FILE}`, and `{SKU_FILE}` exist in this GitHub repository.")
+    st.error(f"🚨 Missing core CSV files! Ensure `{MASTER_FILE}`, `{LINKS_FILE}`, and `{SKU_FILE}` exist in your root GitHub directory.")
     st.stop()
 
-# Fast lookup dictionaries
-master_map = df_m.set_index('Part No.').to_dict('index')
+# Drop duplicate part numbers to prevent ValueError during index mapping
+master_map = df_m.drop_duplicates(subset=['Part No.']).set_index('Part No.').to_dict('index')
 
 bom_tree = {}
 for _, row in df_l.iterrows():
