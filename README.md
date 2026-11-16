@@ -1,2 +1,2 @@
-# bom-costing-tool
+# northstar-cbom-management
 BOM Costing
