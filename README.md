@@ -1,2 +1,2 @@
-# northstar-cbom-management
+# Northstar-CBOM-Management
 BOM Costing
