@@ -3,7 +3,7 @@ import pandas as pd
 import re
 import os
 
-st.set_page_config(page_title="BOM Pro", layout="wide")
+st.set_page_config(page_title="Northstar CBOM Management", layout="wide")
 
 # --- 1. HARDCODED FILENAMES ---
 MASTER_FILE = "Item_Master_v4_Template.csv"
@@ -33,7 +33,7 @@ def load_data():
     return df_m, df_l, df_s
 
 # --- 3. INITIALIZE & BUILD LOOKUP TABLES ---
-st.title("🚀 BOM Professional")
+st.title("Northstar CBOM Management")
 df_m, df_l, df_s = load_data()
 
 if df_m is None:
